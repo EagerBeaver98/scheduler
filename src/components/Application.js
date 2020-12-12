@@ -55,10 +55,30 @@ export default function Application(props) {
         interview={interview}
         interviewers={dailyInterviewers}
         bookInterview={bookInterview}
+        onDelete={cancelInterview}
       />
     );
   })
 
+  function cancelInterview(id, callback) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    axios.delete(`http://localhost:8001/api/appointments/${id}`)
+    .then (() => {
+      setState({...state, appointments: {...appointments}});
+      callback("EMPTY");
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+
+  }
 
   function bookInterview(id, interview, callback) {
     const appointment = {
