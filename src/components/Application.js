@@ -37,12 +37,47 @@ export default function Application(props) {
     .then((all) => {
       // setDays(all[0].data)
       setState({...state, days: all[0].data, appointments: all[1].data, interviewers: all[2].data})
+      console.log(all[1].data)
       
     })
   }, [])
 
   dailyAppointments = getAppointmentsForDay(state, state.day);
-  dailyInterviewers = getInterviewersForDay(state, state.day);
+  const dailyInterviewers = getInterviewersForDay(state, state.day);
+  const schedule = dailyAppointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
+
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+        interviewers={dailyInterviewers}
+        bookInterview={bookInterview}
+      />
+    );
+  })
+
+
+  function bookInterview(id, interview, callback) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    axios.put(`http://localhost:8001/api/appointments/${id}`, {interview: appointment.interview})
+    .then(() => {
+      setState({...state, appointments: {...appointments}});
+      callback("SHOW");
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+  }
 
   const interview = dailyAppointments.map((appointment) => {
     return getInterview(state, appointment.interview);
@@ -70,9 +105,7 @@ export default function Application(props) {
 </div>}
       </section>
       <section className="schedule">
-        {dailyAppointments.map((appointment) => {
-          return <Appointment key={appointment.id} {...appointment} />
-        }) }
+        {schedule}
       </section>
     </main>
   );

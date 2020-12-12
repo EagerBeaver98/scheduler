@@ -39,6 +39,11 @@ const getInterviewersForDay = (state, interview) => {
       if (interview.interview) {
         if (interview.interview.interviewer === state.interviewers[key].id) {
           returnInterviewers.push(state.interviewers[key]);
+          for (let x = 0; returnInterviewers.length > 1 && x < returnInterviewers.length; x++) {
+            if (returnInterviewers[x] === returnInterviewers[returnInterviewers.length - 1]) {
+              returnInterviewers.pop();
+            }
+          }
         }
       }
     }
