@@ -1,23 +1,23 @@
-const getAppointmentsForDay = (state, days) => {
+const getAppointmentsForDay = (state, stateDay) => {
   const filteredInterviews = [];
-  for (let day of state.days) {
-    if (day.name === days) {
-      for (let dayAppointment of day.appointments) {
-        for (let key in state.appointments) {
-          if (dayAppointment === state.appointments[key].id) {
-            filteredInterviews.push(state.appointments[key])
-          }
-        }
-      }
+  const singleDay = state.days.find((day) => day.name === stateDay)
+  
+  if (singleDay) {
+    const singleDayAppointments = singleDay.appointments;
+    const stateAppointments = Object.keys(state.appointments);
+    for (let singleAppointment of singleDayAppointments) {
+      filteredInterviews.push(stateAppointments.find((appointment) => appointment == singleAppointment))
     }
   }
   return filteredInterviews;
+  
 }
 
 const getInterview = (state, interview) => {
   if (!interview) {
     return null;
   } else {
+    // console.log("get interview state", state)
     for (let key in state.interviewers) {
       if (state.interviewers[key].id === interview.interviewer) {
         return {student: interview.student, interviewer: {
@@ -33,22 +33,13 @@ const getInterview = (state, interview) => {
 
 const getInterviewersForDay = (state, interview) => {
   let filteredInterviews = getAppointmentsForDay(state, interview);
-  const returnInterviewers = [];
-  for (let interview of filteredInterviews) {
-    for (let key in state.interviewers) {
-      if (interview.interview) {
-        if (interview.interview.interviewer === state.interviewers[key].id) {
-          returnInterviewers.push(state.interviewers[key]);
-          for (let x = 0; returnInterviewers.length > 1 && x < returnInterviewers.length; x++) {
-            if (returnInterviewers[x] === returnInterviewers[returnInterviewers.length - 1]) {
-              returnInterviewers.pop();
-            }
-          }
-        }
-      }
+  if (filteredInterviews.length) {
+    const returnInterviewers = [];
+    const interviewerKeys = Object.keys(state.interviewers);
+    for (let interviewer of filteredInterviews) {
+      returnInterviewers.push(state.interviewers[interviewerKeys.find((interviewerKey) => interviewerKey == interviewer)])
+      return returnInterviewers;
     }
   }
-  return returnInterviewers;
 }
-
 export {getAppointmentsForDay, getInterview, getInterviewersForDay};
