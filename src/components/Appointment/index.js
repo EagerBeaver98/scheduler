@@ -37,7 +37,7 @@ export default function Appointment(props) {
     props.onDelete(props.id, transition);
   }
   return (
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
     {mode === SAVING && <Status />}
     {mode === ERROR_SAVE && <Error onClose={() => transition("SHOW")}/>}
