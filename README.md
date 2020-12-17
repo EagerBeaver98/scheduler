@@ -24,8 +24,8 @@ npm run storybook
 
 ## Main page
 
-!["Main Page"](URL)
+!["Main Page"](docs/Main-Page.png)
 
 ## Edit Form
 
-!["Edit Form"](URL)
+!["Edit Form"](docs/Edit-Page.png)
