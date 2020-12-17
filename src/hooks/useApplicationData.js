@@ -22,19 +22,19 @@ export default function useApplicationData () {
     return count;
   }
 
-  // function setSpots() {
-  //   const count = getAppointmentsForDay(state, state.day).
-  //   length - countInterviews(getAppointmentsForDay(state, state.day));
-  //   const updatedDays = state.days.map((day) => {
-  //     if (day.name === state.day) {
-  //       return day = {...day, spots: count}; 
-  //     } else {
-  //       return day;
-  //     }
-  //   })
-  //   console.log(updatedDays)
-  //   return updatedDays;
-  // }
+  function setSpots() {
+    const count = getAppointmentsForDay(state, state.day).
+    length - countInterviews(getAppointmentsForDay(state, state.day));
+    const updatedDays = state.days.map((day) => {
+      if (day.name === state.day) {
+        return day = {...day, spots: count}; 
+      } else {
+        return day;
+      }
+    })
+    console.log(updatedDays)
+    return updatedDays;
+  }
 
   function bookInterview(id, interview, callback) {
     const appointment = {
@@ -51,7 +51,7 @@ export default function useApplicationData () {
       return;
     })
     .then(() => {
-      // setSpots()
+      setSpots()
       callback("SHOW");
       return;
     })

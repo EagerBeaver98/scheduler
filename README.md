@@ -21,3 +21,11 @@ npm test
 ```sh
 npm run storybook
 ```
+
+## Main page
+
+!["Main Page"](URL)
+
+## Edit Form
+
+!["Edit Form"](URL)

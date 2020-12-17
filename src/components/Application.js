@@ -9,12 +9,6 @@ import DayList from "./DayList";
 
 import {getAppointmentsForDay, getInterview, getInterviewersForDay} from "../helpers/selectors";
 
-// const appointments = [];
-
-// axios.get("http://localhost:8001/api/appointments")
-// .then((data) => {
-//   console.log(data.data);
-// })
 
 export default function Application() {
   const {
@@ -34,7 +28,7 @@ export default function Application() {
     .then((all) => {
       setState({...state, days: all[0].data, appointments: all[1].data, interviewers: all[2].data})
     })
-  }, [state.appointments])
+  }, [])
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const dailyInterviewers = getInterviewersForDay(state, state.day);
