@@ -18,7 +18,6 @@ export default function useApplicationData () {
         count += 1;
       }
     }
-    console.log("Count interviews", count)
     return count;
   }
 
@@ -32,7 +31,6 @@ export default function useApplicationData () {
         return day;
       }
     })
-    console.log(updatedDays)
     return updatedDays;
   }
 
