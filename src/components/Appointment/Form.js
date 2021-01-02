@@ -38,6 +38,7 @@ export default function Form(props) {
         data-testid="student-name-input"
       />
     </form>
+    {console.log(props)}
     <InterviewerList interviewer={interviewer} interviewers={props.interviewers} setInterviewer={setInterviewer}/>
   </section>
   <section className="appointment__validation">{error}</section>
