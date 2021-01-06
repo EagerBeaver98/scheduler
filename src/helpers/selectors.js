@@ -9,6 +9,7 @@ const getAppointmentsForDay = (state, stateDay) => {
       filteredInterviews.push(stateAppointments.find((appointment) => appointment == singleAppointment));
     }
   }
+  console.log("getAppointments filtered", filteredInterviews)
   return filteredInterviews;
   
 }
@@ -30,15 +31,17 @@ const getInterview = (state, interview) => {
 
 }
 
-const getInterviewersForDay = (state, interview) => {
-  let filteredInterviews = getAppointmentsForDay(state, interview);
-  if (filteredInterviews.length) {
-    const returnInterviewers = [];
-    const interviewerKeys = Object.keys(state.interviewers);
-    for (let interviewer of filteredInterviews) {
-      returnInterviewers.push(state.interviewers[interviewerKeys.find((interviewerKey) => interviewerKey == interviewer)])
+const getInterviewersForDay = (state, day) => {
+  let foundDay = state.days.find((d) => {
+    if (d.name === day) {
+      return true;
     }
-    return returnInterviewers;
+  })
+  if (!foundDay) {
+    return [];
   }
+  return foundDay.interviewers.map((id) => state.interviewers[id])
 }
+
+
 export {getAppointmentsForDay, getInterview, getInterviewersForDay};
