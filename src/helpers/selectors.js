@@ -9,7 +9,6 @@ const getAppointmentsForDay = (state, stateDay) => {
       filteredInterviews.push(stateAppointments.find((appointment) => appointment == singleAppointment));
     }
   }
-  console.log("getAppointments filtered", filteredInterviews)
   return filteredInterviews;
   
 }

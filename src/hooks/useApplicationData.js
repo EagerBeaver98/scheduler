@@ -11,27 +11,9 @@ export default function useApplicationData () {
 
   const setDay = day => setState({...state, day});
 
-  const countInterviews = (appointments) => {
-    let count = 0;
-    for (let appointment of appointments) {
-      if (state.appointments[appointment].interview) {
-        count += 1;
-      }
-    }
-    return count;
-  }
-
-  function setSpots() {
-    const count = getAppointmentsForDay(state, state.day).
-    length - countInterviews(getAppointmentsForDay(state, state.day));
-    const updatedDays = state.days.map((day) => {
-      if (day.name === state.day) {
-        return day = {...day, spots: count}; 
-      } else {
-        return day;
-      }
-    })
-    return updatedDays;
+  function setSpots(newAppointments) {
+    console.log(newAppointments)
+    console.log(state.appointments)
   }
 
   function bookInterview(id, interview, callback) {
@@ -43,15 +25,12 @@ export default function useApplicationData () {
       ...state.appointments,
       [id]: appointment
     };
-    axios.put(`http://localhost:8001/api/appointments/${id}`, {interview: appointment.interview})
+    console.log("revised appointments", appointments)
+    axios.put(`/api/appointments/${id}`, {interview: appointment.interview})
     .then(() => {
-      setState({...state, appointments: {...appointments}});
-      return;
-    })
-    .then(() => {
-      setSpots()
+      setState({...state, appointments: appointments});
+      setSpots(appointments)
       callback("SHOW");
-      return;
     })
     .catch(() => {
       callback("ERROR_SAVE")
@@ -66,7 +45,7 @@ export default function useApplicationData () {
       ...state.appointments,
       [id]: appointment
     };
-    axios.delete(`http://localhost:8001/api/appointments/${id}`)
+    axios.delete(`/api/appointments/${id}`)
     .then (() => {
       setState({...state, appointments: {...appointments}});
       callback("EMPTY");
