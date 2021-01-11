@@ -12,8 +12,18 @@ export default function useApplicationData () {
   const setDay = day => setState({...state, day});
 
   function setSpots(newAppointments) {
-    console.log(newAppointments)
-    console.log(state.appointments)
+    const dayAppointments = getAppointmentsForDay(state, state.day);
+    let spots = 5;
+    for (const num of dayAppointments) {
+      if (newAppointments[num].interview) {
+        spots -= 1;
+      }
+    }
+    const stateDays = [...state.days];
+    const dayIndex = stateDays.findIndex(({ name } ) => name === state.day)
+    stateDays[dayIndex].spots = spots;
+    console.log(stateDays[dayIndex])
+    setState({...state, days: stateDays});
   }
 
   function bookInterview(id, interview, callback) {
@@ -25,14 +35,14 @@ export default function useApplicationData () {
       ...state.appointments,
       [id]: appointment
     };
-    console.log("revised appointments", appointments)
     axios.put(`/api/appointments/${id}`, {interview: appointment.interview})
     .then(() => {
       setState({...state, appointments: appointments});
-      setSpots(appointments)
+      setSpots(appointments);
       callback("SHOW");
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err)
       callback("ERROR_SAVE")
     })
   }
