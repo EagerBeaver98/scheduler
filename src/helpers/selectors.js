@@ -42,5 +42,25 @@ const getInterviewersForDay = (state, day) => {
   return foundDay.interviewers.map((id) => state.interviewers[id])
 }
 
+const setNewAppointments = (id, state, interview) => {
+  let appointment;
+  if (interview) {
+    appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+  } else {
+    appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+  }
+  const appointments = {
+    ...state.appointments,
+    [id]: appointment
+  };
+  return [appointment, appointments];
+}
 
-export {getAppointmentsForDay, getInterview, getInterviewersForDay};
+
+export {getAppointmentsForDay, getInterview, getInterviewersForDay, setNewAppointments};
