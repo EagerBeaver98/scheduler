@@ -26,22 +26,27 @@ export default function Appointment(props) {
   );
   function save(name, interviewer) {
     transition(SAVING);
-    const interview = {
-      student: name,
-      interviewer
-    };
-    props.bookInterview(props.id, interview, transition)
+    if (!name || !interviewer) {
+      transition(ERROR_SAVE)
+    } else {
+      const interview = {
+        student: name,
+        interviewer
+      };
+      props.bookInterview(props.id, interview, transition)
+    }
   }
   function remove() {
     transition(STATUS);
     props.onDelete(props.id, transition);
   }
+  const errorClose = () => transition(SHOW)
   return (
     <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
     {mode === SAVING && <Status />}
-    {mode === ERROR_SAVE && <Error onClose={() => transition("SHOW")}/>}
-    {mode === ERROR_DELETE && <Error onClose={() => transition("SHOW")}/>}
+    {mode === ERROR_SAVE && <Error onClose={errorClose()}/>}
+    {mode === ERROR_DELETE && <Error onClose={errorClose()}/>}
     {mode === STATUS && <Status />}
     {mode === CREATE && <Form interviewers={props.interviewers} name={props.student} onSave={save} onCancel={back}/>}
     {mode === EDIT && <Form interviewers={props.interviewers} interviewer={props.interviewers} name={props.interview.student} interviewer={props.interview.interviewer.id} onSave={save} onCancel={back}/>}
