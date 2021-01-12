@@ -55,7 +55,7 @@ export default function useApplicationData () {
     };
     axios.delete(`/api/appointments/${id}`)
     .then (() => {
-      setState({...state, appointments: {...appointments}});
+      setState({...state, appointments: {...appointments}, days: setSpots(appointments)});
       callback("EMPTY");
     })
     .catch(() => {
