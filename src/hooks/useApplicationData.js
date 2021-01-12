@@ -45,8 +45,8 @@ export default function useApplicationData () {
       callback("SHOW");
     })
     .catch((err) => {
-      console.log(err)
-      callback("ERROR_SAVE")
+      console.error("server error", err)
+      callback("ERROR_DELETE")
     })
   }
   function cancelInterview(id, callback) {
