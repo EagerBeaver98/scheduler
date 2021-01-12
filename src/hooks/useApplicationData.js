@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import {getAppointmentsForDay} from "../helpers/selectors";
 
@@ -10,6 +10,29 @@ export default function useApplicationData () {
   interviewers: {},})
 
   const setDay = day => setState({...state, day});
+
+  useEffect(() => {
+    Promise.all([
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers"),
+    ])
+    .then((all) => {
+      setState({...state, days: all[0].data, appointments: all[1].data, interviewers: all[2].data})
+    })
+  }, [])
+
+  const setNewAppointments = (id, interview) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    return [appointment, appointments];
+  }
 
   function setSpots(newAppointments) {
     const dayAppointments = getAppointmentsForDay(state, state.day);
@@ -26,17 +49,11 @@ export default function useApplicationData () {
   }
 
   function bookInterview(id, interview, callback) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    axios.put(`/api/appointments/${id}`, {interview: appointment.interview})
+    const newAppointments = setNewAppointments(id, interview)
+
+    axios.put(`/api/appointments/${id}`, {interview: newAppointments[0].interview})
     .then(() => {
-      setState({...state, appointments: appointments, days: setSpots(appointments)});
+      setState({...state, appointments: newAppointments[1], days: setSpots(newAppointments[1])});
       callback("SHOW");
     })
     .catch((err) => {
