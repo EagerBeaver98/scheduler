@@ -14,7 +14,8 @@ export default function Application() {
     state,
     setDay,
     bookInterview,
-    cancelInterview
+    cancelInterview,
+    errorText
   } = useApplicationData();
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
@@ -30,6 +31,7 @@ export default function Application() {
         interviewers={dailyInterviewers}
         bookInterview={bookInterview}
         onDelete={cancelInterview}
+        message={errorText}
       />
     );
   })

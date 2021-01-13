@@ -8,6 +8,8 @@ export default function useApplicationData () {
   days: [],
   appointments: {},
   interviewers: {},})
+  
+  const [errorText, setError] = useState();
 
   const setDay = day => setState({...state, day});
 
@@ -45,7 +47,7 @@ export default function useApplicationData () {
       callback("SHOW");
     })
     .catch((err) => {
-      console.error("server error", err)
+      setError(`${err.response.status}: ${err.response.statusText}   Please try again.`);
       callback("ERROR_DELETE")
     })
   }
@@ -56,11 +58,11 @@ export default function useApplicationData () {
       setState({...state, appointments: {...newAppointments[1]}, days: setSpots(newAppointments[1])});
       callback("EMPTY");
     })
-    .catch(() => {
+    .catch((err) => {
+      setError(`${err.response.status}: ${err.response.statusText}   Please try again.`);
       callback("ERROR_DELETE");
     })
 
   }
-
-  return {state, setDay, bookInterview, cancelInterview, setState};
+  return {state, setDay, bookInterview, cancelInterview, setState, errorText};
 }
