@@ -45,7 +45,7 @@ export default function Appointment(props) {
     <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
     {mode === SAVING && <Status />}
-    {mode === ERROR_SAVE && <Error onClose={errorClose}/>}
+    {mode === ERROR_SAVE && <Error onClose={back}/>}
     {mode === ERROR_DELETE && <Error onClose={back}/>}
     {mode === STATUS && <Status />}
     {mode === CREATE && <Form interviewers={props.interviewers} name={props.student} onSave={save} onCancel={back}/>}
