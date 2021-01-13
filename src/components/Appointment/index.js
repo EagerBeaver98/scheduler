@@ -40,13 +40,13 @@ export default function Appointment(props) {
     transition(STATUS);
     props.onDelete(props.id, transition);
   }
-  const errorClose = () => transition(SHOW)
+  const errorClose = () => transition(EMPTY)
   return (
     <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
     {mode === SAVING && <Status />}
-    {mode === ERROR_SAVE && <Error onClose={errorClose()}/>}
-    {mode === ERROR_DELETE && <Error onClose={errorClose()}/>}
+    {mode === ERROR_SAVE && <Error onClose={errorClose}/>}
+    {mode === ERROR_DELETE && <Error onClose={back}/>}
     {mode === STATUS && <Status />}
     {mode === CREATE && <Form interviewers={props.interviewers} name={props.student} onSave={save} onCancel={back}/>}
     {mode === EDIT && <Form interviewers={props.interviewers} interviewer={props.interviewers} name={props.interview.student} interviewer={props.interview.interviewer.id} onSave={save} onCancel={back}/>}
